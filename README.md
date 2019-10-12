@@ -36,5 +36,12 @@ git pull upstream/master
 ```
 
 
-## How to make branch
+## How to reset commit in your machine
+
+```sh
+
+git reset --hard HEAD~n # restore 'n' steps back
+
+```
+
 
