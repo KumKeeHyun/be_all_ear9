@@ -7,11 +7,11 @@
 
 create new branch in your forked repository
 
-``sh
+```sh
 
 git checkout -B 'new-branch-name' 
 
-``
+```
 
 send pull request at the github web interface
 
@@ -19,13 +19,13 @@ wait your pull request to be merged
 
 update your forked repository from original repository
 
-``sh
+```sh
 
 git checkout master 
 
 git pull upstream/master
 
-``
+```
 
 
 ## How to make branch
