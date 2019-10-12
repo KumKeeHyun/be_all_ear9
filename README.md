@@ -13,6 +13,14 @@ git checkout -B 'new-branch-name'
 
 ```
 
+add upstream (KumKeehyun/The-Gasero) to your working environment
+
+```sh
+
+git remote add https://github.com/KumKeeHyun/The-Gasero.git
+
+```
+
 send pull request at the github web interface
 
 wait your pull request to be merged
