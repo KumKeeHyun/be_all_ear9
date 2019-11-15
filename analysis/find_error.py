@@ -22,7 +22,8 @@ anal_node_que = Queue(100)
 #take a sentence and divide it into words and save, return in a list
 def split_sentence(sentence):
 	word_list = []
-	#fill function
+	for word in sentence.split():
+                word_list.append(word)
 
 	return word_list
 
