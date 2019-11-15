@@ -32,11 +32,16 @@ def split_sentence(sentence):
 #the way to add anly_node to queue is
 #anal_node_que.put(anlys_node(c_word, v_word))
 def analysis_sentence(c_sentence, v_sentence):
+        pass
 	#fill function
 
 
 #open a file, read sentence by sentence and fill anal_node_que
 #use analysis_sentence
 def read_sentence_file(c_txt_path, v_txt_path):
-	#fill function
+        c = open(c_txt_path, mode = 'r')
+        c_sentence = c.read()
+        
+        v = open(v_txt_path, mode = 'r')
+        v_sentence = v.read()
 
