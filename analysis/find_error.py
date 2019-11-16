@@ -1,5 +1,4 @@
 #find error
-
 from queue import Queue
 
 class anlys_node:
@@ -15,6 +14,7 @@ class anlys_node:
 	def analysis_str(self):
 		if (self.c_word is not self.v_word):
 			#fill function
+
 
 #stored analysis_node temporarily
 anal_node_que = Queue(100)
@@ -35,6 +35,16 @@ def split_sentence(sentence):
 def analysis_sentence(c_sentence, v_sentence):
         pass
 	#fill function
+        print(c_sentence.split(' '))
+        print(v_sentence.split(' '))
+        while(1)
+        {
+                if c_sentence.split(' ')[i]==v_sentence[i]:
+                    pass
+                else:
+                    anlys_node+=v_sentence[i]
+                i++
+        }        
 
 
 #open a file, read sentence by sentence and fill anal_node_que
@@ -45,4 +55,5 @@ def read_sentence_file(c_txt_path, v_txt_path):
         
         v = open(v_txt_path, mode = 'r')
         v_sentence = v.read()
+
 
