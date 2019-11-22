@@ -5,22 +5,20 @@ import os
 host = '172.17.0.1'
 port = 8080
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((host, port))
-s.listen(1)
+#--------------------------------------
 
-while True:
-	sd, addr = s.accept()
-	print('Got sdection from', addr)
-	
-	file_path = './flac_set/wav_file/wav_example.wav'
-	f = open(file_path, 'rb')
-	line = f.read(1024)
+sd = socket.socket()
+sd.connect((host, port))
+
+f_path = './flac_set/wav_file/wav_example.wav'
+
+with open(f_path, 'rb') as fd:
+	print('file opened', f_path)
+
+	line = fd.read(1024)
 	while (line):
 		sd.send(line)
-		line = f.read(1024)
+		line = fd.read(1024)
 
-	print('Done sending')
+	print('send done')
 	sd.close()
-
-
