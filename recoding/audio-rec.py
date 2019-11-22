@@ -1,53 +1,56 @@
+from tkinter import ttk
+from tkinter import *
+import tkinter as tk
+
+import time
 import sys
 import os
 import record
 import readline
 import subprocess
 
-os.system('clear')
-print("===== RECORDING =====")
+root = tk.Tk()
+root.title('Recorder')
+photo = PhotoImage(file='microphone.png').subsample(35, 35)
 
+label1 = ttk.Label(root, text = 'File Name')
+label1.grid(row = 0, column = 0)
 
-def process_word():
-	os.system('clear')
+entry1 = ttk.Entry(root, width = 40) 
+entry1.grid(row = 0, column = 1, columnspan = 4)
 
-	fin = open('file', "r")
-	data_list = fin.readlines()
-	fin.close()
+btn2 = tk.StringVar()
 
-	print("\n\n")
-
-	word = data_list[:!][0].replace('\n','')
-
-	print(word)
-
-	print("\n\n")
-
-	record.record_audio(word)
-
-	print("\n\n")
-
-def process_next_word():
-	print("\n\n")
-
-	next_word = raw_input("Are you ready for next word? Y/N : ")
-	next_word = next_word.lower()
-
-	if next_word == 'y':
-		process_word()
-		process_next_word()
-
-	elif next_word == 'n' :
-		print("Thanks")
-	
+##definitions here
+def callback():
+	if len(entry1.get()) == 0:
+		messagebox.showinfo("Error", "Enter File Name")
 	else:
-		print("Enter Y or N")
+		word = entry1.get()
+		record.record_audio(word)
 
-answer = raw_input("Are you ready? Y/N: ")
-
-if answer.lower() == 'y':
-	process_word()
-	process_next_word()
-elif answer.lower() == 'n':
-	print "Thanks"
+def stop():
 	sys.exit()
+
+def quit():
+	sys.exit()
+
+def save_file():
+	sys.exit()
+
+###
+
+
+MyButton1 = ttk.Button(root, text='Start', width=10, command=callback)
+MyButton1.grid(row = 0, column = 6)
+
+MyButton2 = ttk.Button(root, text='Stop', width=10, command=stop)
+MyButton2.grid(row = 0, column = 16)
+
+MyButton3 = ttk.Button(root, text = 'Save Audio', width=10, command=save_file)
+MyButton3.grid(row = 2,column = 4)
+
+MyButton4 = ttk.Button(root, text = 'Quit', width=10, command=quit)
+MyButton4.grid(row = 2, column = 14)
+
+root.mainloop()
