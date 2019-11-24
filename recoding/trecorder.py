@@ -6,6 +6,7 @@ import tkinter.messagebox
 import pyaudio
 import wave
 import os
+import sys
 
 
 class Rec:
@@ -27,21 +28,24 @@ class Rec:
 								input = True,
 								frames_per_buffer = self.CHUNK)
 
-		self.buttons = tkinter.Frame(self.main, padx=120, pady=20)
-
+		self.buttons = tkinter.Frame(self.main)
 		self.buttons.pack(fill = tk.BOTH)
+		self.labels = tkinter.Frame(self.main)
+		self.labels.pack(fill = tk.BOTH)
+#		self.entry = tkinter.Frame(self.main)
+#		self.entry.pack(fill =  tk.BOTH)
 
-		#label1 = ttk.Label(root, text = 'File Name')
-		#label1.grid(row = 0, column = 0)
+		label1 = ttk.Label(self.labels, text = 'File Name')
+		label1.grid(row = 0, column = 0)
 
-		#entry1 = ttk.Entry(root, width = 40) 
-		#entry1.grid(row = 0, column = 2, columnspan = 4)
+#		entry1 = ttk.Entry(self.entry, width = 40) 
+#		entry1.grid(row = 0, column = 2, columnspan = 4)
 
-		#label2 = ttk.Label(root, text = 'Your Text')
-		#label2.grid(row = 4, column = 0)
+		label2 = ttk.Label(self.labels, text = 'Your Text')
+		label2.grid(row = 4, column = 0)
 
-		#entry2 = ttk.Entry(root, width = 40)
-		#entry2.grid(row = 4, column = 2, columnspan = 4)
+#		entry2 = ttk.Entry(self, width = 40)
+#		entry2.grid(row = 4, column = 2, columnspan = 4)
 	
 		MyButton1 = ttk.Button(self.buttons, text='Start', width=10, command=lambda: self.start_rec())
 		MyButton1.grid(row = 0, column = 8)
@@ -57,10 +61,18 @@ class Rec:
 
 		tkinter.mainloop()
 
+	def callback():
+		if len(entry1.get()) == 0:
+			messagebox.showinfo("Error", "Enter File Name")
+		else:
+			word = entry1.get()
+			
+
 	def start_rec(self):
 		self.st = 1
 		self.frames = []
-		self.stream = self.p.open(format = self.FORMAT, 
+#		self.filename = word + ".wav"
+		stream = self.p.open(format = self.FORMAT, 
 							channels = self.CHANNELS,
 							rate = self.RATE,
 							input = True,
@@ -95,10 +107,10 @@ guiAUD = Rec()
 
 
 ##definitions here
-#def callback():
-#	if len(entry1.get()) == 0:
-#		messagebox.showinfo("Error", "Enter File Name")
-#	else:
-#		word = entry1.get()
-#		record.record_audio(word)
+def callback():
+	if len(entry1.get()) == 0:
+		messagebox.showinfo("Error", "Enter File Name")
+	else:
+		word = entry1.get()
+		record.record_audio(word)
 
