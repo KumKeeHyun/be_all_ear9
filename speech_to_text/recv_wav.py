@@ -1,6 +1,8 @@
 import socket
+from wav_to_flac import worker
 
 host = '172.17.0.1'
+#host = '192.168.0.4'
 port = 8080
 
 #---------------------------------------
@@ -42,4 +44,7 @@ while True:
 	fd.close()
 	sd.close()
 	print('success get file')
+	
+	worker(f)
+	print('success change format')
 
