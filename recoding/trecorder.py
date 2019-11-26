@@ -1,6 +1,5 @@
-from tkinter import ttk
 from tkinter import messagebox
-import tkinter as tk
+import tkinter
 
 import pyaudio
 import wave
@@ -25,58 +24,57 @@ def send_wav_file(fn):
 		sd.close()
 
 
-class Rec(tk.Tk):
-	def __init__(self, chunk = 1024, frmt = pyaudio.paInt16, channels = 1, rate = 44100, py = pyaudio.PyAudio()):
-	
-		self.main = tk.Tk()
-		tk.Tk.__init__(self)
+class Rec(tkinter.Tk):
+	def __init__(self):	
+		self.main = tkinter.Tk()
 		self.collections = []
-		self.CHUNK = chunk
-		self.FORMAT = frmt
-		self.CHANNELS = channels
-		self.RATE = rate
-		self.p = py
+		self.CHUNK = 4096
+		self.FORMAT = pyaudio.paInt16
+		self.CHANNELS = 1
+		self.RATE = 44100
+		self.p = pyaudio.PyAudio()
 		self.frames = []
 		self.st = 1
-		self.stream = self.p.open(format = self.FORMAT, 
-								channels = self.CHANNELS,
-								rate = self.RATE,
-								input = True,
-								frames_per_buffer = self.CHUNK)
-
+		self.stream = self.p.open(format = self.FORMAT, channels = self.CHANNELS, rate = self.RATE, input = True, frames_per_buffer = self.CHUNK)
+	
 		self.initialize()
-
+		
 	def initialize(self):
-		self.label1 = tk.Label(self, text = 'File Name')
+
+		self.frame = tkinter.Frame(self.main)
+		self.frame.pack()
+	
+		self.label1 = tkinter.Label(self.frame, text = 'File Name')
 		self.label1.grid(row = 0, column = 5)
 
-		self.entry1 = tk.Entry(self, width = 40) 
+		self.entry1 = tkinter.Entry(self.frame, width = 40) 
 		self.entry1.grid(row = 0, column = 6, columnspan = 4)
 
-		self.label2 = tk.Label(self, text = 'Your Text')
+		self.label2 = tkinter.Label(self.frame, text = 'Your Text')
 		self.label2.grid(row = 1, column = 5)
 
-		self.entry2 = tk.Entry(self, width = 40)
+		self.entry2 = tkinter.Entry(self.frame, width = 40)
 		self.entry2.grid(row = 1, column = 6, columnspan = 4)
 	
-		self.labelValue = tk.StringVar()
-		self.label = tk.Label(self, width = 60, fg ='white', bg = 'skyblue', textvariable=self.labelValue)
+		self.labelValue = tkinter.StringVar()
+		self.label = tkinter.Label(self.frame, width = 60, fg ='white', bg = 'skyblue', textvariable=self.labelValue)
 		self.label.grid(row = 3, column = 0, columnspan = 50)
 
 		self.labelValue.set('empty') 
 
-		self.MyButton1 = tk.Button(self, text='Start', width=10, height=1, command=lambda: self.callback())
+		self.MyButton1 = tkinter.Button(self.frame, text='Start', width=10, height=1, command=lambda: self.callback())
 		self.MyButton1.grid(row = 2, column = 5)
 
-		self.MyButton2 = tk.Button(self, text='Stop', width=10, height=1, command=lambda: self.stop_rec())
+		self.MyButton2 = tkinter.Button(self.frame, text='Stop', width=10, height=1, command=lambda: self.stop_rec())
 		self.MyButton2.grid(row = 2, column = 6)
 
-		self.MyButton3 = tk.Button(self, text = 'Save Text', width=10, height=1, command=lambda: self.save_text())
+		self.MyButton3 = tkinter.Button(self.frame, text = 'Save Text', width=10, height=1, command=lambda: self.save_text())
 		self.MyButton3.grid(row = 2, column = 7)
 
-		self.MyButton4 = tk.Button(self, text = 'Quit', width=10, height=1, command=lambda: self.quit())
+		self.MyButton4 = tkinter.Button(self.frame, text = 'Quit', width=10, height=1, command=lambda: self.quit())
 		self.MyButton4.grid(row = 2, column = 8)
 
+		tkinter.mainloop()
 	def callback(self):
 		if (len(self.entry1.get())) == 0:
 			messagebox.showinfo("Error", "Enter File Name")
@@ -87,17 +85,13 @@ class Rec(tk.Tk):
 	def start_rec(self, word):
 		self.st = 1
 		self.frames = []
-		self.filename = '/home/userr/Desktop/ws/be_all_ear9/speech_to_text/flac_set/wav_file/' + self.word + ".wav"
+		self.filename = '/home/pi/github/be_all_ear9/speech_to_text/flac_set/wav_file/' + self.word + ".wav"
 		WAVE_OUTPUT_FILENAME = self.filename
-		stream = self.p.open(format = self.FORMAT, 
-							channels = self.CHANNELS,
-							rate = self.RATE,
-							input = True,
-							frames_per_buffer = self.CHUNK)
+		stream = self.p.open(format = self.FORMAT, channels = self.CHANNELS, rate = self.RATE, input = True, frames_per_buffer = self.CHUNK)
 
 		self.labelValue.set('recording') 
 
-		while self.st == 1 :
+		while (self.st == 1) :
 			data = stream.read(self.CHUNK)
 			self.frames.append(data)
 			self.main.update()
@@ -124,5 +118,3 @@ class Rec(tk.Tk):
 		sys.exit()			
 
 guiAUD = Rec()		
-guiAUD.title = 'ReCoRD'
-guiAUD.mainloop()
