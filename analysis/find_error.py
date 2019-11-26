@@ -57,8 +57,8 @@ class anlys_node:
         self.count_error()
         if self.c_word == self.v_word:
             print('no error')
-        for error in self.error:
-            print("occur","\"", self.error_match[error],"\"", "error, ", self.error_cnt[error],"times")
+        for error in list(set(self.error)):
+            print("occur","\"", self.error_match[error],"\"", "error, ", self.typo_cnt,"times")
         
                 
     def analysis_str(self): #fill self.error(list)
@@ -77,11 +77,11 @@ class anlys_node:
                         self.error.append(error)
             
     def count_error(self):
-        for error in self.error_cnt:
+        for error in self.error:
             if error in self.error:
                 self.error_cnt[error] += 1
                 self.typo_cnt += 1
-        return self.error_cnt
+        return self.error_cnt, self.typo_cnt
 
     def convert_phonics(self): # ex) 'th' -> '&'
         phonics_list = list(self.error_match.values())
@@ -150,11 +150,25 @@ def analysis_sentence(c_sentence, v_sentence):
 #open a file, read sentence by sentence and fill anal_node_que
 #use analysis_sentence
 def read_sentence_file(c_txt_path, v_txt_path):
-        c = open(c_txt_path, mode = 'r')
-        c_sentence = c.read()
+    c_sentence_list = []
+    v_sentence_list = []
+    c_sentence = 'none'
+    v_sentence = 'none'
+    
+    c = open(c_txt_path, mode = 'r')
+    v = open(v_txt_path, mode = 'r')
+
+    while c_sentence != '':
+        c_sentence = c.readline()
+        c_sentence_list.append(c_sentence)
+
+    while v_sentence != '':
+        v_sentence = v.readline()
+        v_sentence_list.append(v_sentence)
+
+    c.close()
+    v.close()
+    
         
-        v = open(v_txt_path, mode = 'r')
-        v_sentence = v.read()
-        
-        return c_sentence, v_sentence
+    return c_sentence_list, v_sentence_list
 
