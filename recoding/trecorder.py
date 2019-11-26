@@ -27,6 +27,9 @@ class Rec(tk.Tk):
 								input = True,
 								frames_per_buffer = self.CHUNK)
 
+		self.initialize()
+
+	def initialize(self):
 		self.label1 = tk.Label(self, text = 'File Name')
 		self.label1.grid(row = 0, column = 5)
 
@@ -40,7 +43,7 @@ class Rec(tk.Tk):
 		self.entry2.grid(row = 1, column = 6, columnspan = 4)
 	
 		self.labelValue = tk.StringVar()
-		self.label = tk.Label(self, width = 50, fg ='white', bg = 'skyblue', textvariable=self.labelValue)
+		self.label = tk.Label(self, width = 60, fg ='white', bg = 'skyblue', textvariable=self.labelValue)
 		self.label.grid(row = 3, column = 0, columnspan = 50)
 
 		self.labelValue.set('empty') 
@@ -57,19 +60,17 @@ class Rec(tk.Tk):
 		self.MyButton4 = tk.Button(self, text = 'Quit', width=10, height=1, command=lambda: self.quit())
 		self.MyButton4.grid(row = 2, column = 8)
 
-		tk.mainloop()
-
 	def callback(self):
 		if (len(self.entry1.get())) == 0:
 			messagebox.showinfo("Error", "Enter File Name")
 		else:
-			self.word = self.entry1.get()
+			self.word =  self.entry1.get()
 			self.start_rec(self.word)			
 
 	def start_rec(self, word):
 		self.st = 1
 		self.frames = []
-		self.filename = self.word + ".wav"
+		self.filename = '/home/userr/Desktop/ws/be_all_ear9/speech_to_text/flac_set/wav_file/' + self.word + ".wav"
 		WAVE_OUTPUT_FILENAME = self.filename
 		stream = self.p.open(format = self.FORMAT, 
 							channels = self.CHANNELS,
@@ -77,16 +78,15 @@ class Rec(tk.Tk):
 							input = True,
 							frames_per_buffer = self.CHUNK)
 
+		self.labelValue.set('recording') 
+
 		while self.st == 1 :
 			data = stream.read(self.CHUNK)
 			self.frames.append(data)
 			self.main.update()
-			self.labelValue('recording')
 
 		stream.close()
 			
-		self.labelValue.set('done recording') 
-
 		wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
 		wf.setnchannels(self.CHANNELS)
 		wf.setsampwidth(self.p.get_sample_size(self.FORMAT))
@@ -96,6 +96,7 @@ class Rec(tk.Tk):
 
 	def stop_rec(self):
 		self.st = 0
+		self.labelValue.set('done recording') 
 
 	def save_text(self):
 		sys.exit()
@@ -105,3 +106,5 @@ class Rec(tk.Tk):
 		sys.exit()			
 
 guiAUD = Rec()		
+guiAUD.title = 'ReCoRD'
+guiAUD.mainloop()
