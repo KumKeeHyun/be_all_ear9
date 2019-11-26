@@ -27,12 +27,6 @@ class Rec(tk.Tk):
 								input = True,
 								frames_per_buffer = self.CHUNK)
 
-#		self.buttons = tk.Frame(self.main)
-#		self.buttons.pack()
-
-#		self.labels = tk.Frame(self.main)
-#		self.labels.pack(fill = tk.BOTH)
-
 		self.label1 = tk.Label(self, text = 'File Name')
 		self.label1.grid(row = 0, column = 5)
 
@@ -45,7 +39,7 @@ class Rec(tk.Tk):
 		self.entry2 = tk.Entry(self, width = 40)
 		self.entry2.grid(row = 10, column = 6, columnspan = 4)
 	
-		self.MyButton1 = tk.Button(self, text='Start', width=10, height=1, command=lambda: self.start_rec())
+		self.MyButton1 = tk.Button(self, text='Start', width=10, height=1, command=lambda: self.callback())
 		self.MyButton1.grid(row = 30, column = 5)
 
 		self.MyButton2 = tk.Button(self, text='Stop', width=10, height=1, command=lambda: self.stop_rec())
@@ -59,17 +53,18 @@ class Rec(tk.Tk):
 
 		tk.mainloop()
 
-	def callback():
-		if len(entry1.get()) == 0:
+	def callback(self):
+		if (len(self.entry1.get())) == 0:
 			messagebox.showinfo("Error", "Enter File Name")
 		else:
-			word = entry1.get()
-		#	start_rec(word)			
+			self.word = self.entry1.get()
+			self.start_rec(self.word)			
 
-	def start_rec(self):
+	def start_rec(self, word):
 		self.st = 1
 		self.frames = []
-#		self.filename = word + ".wav"
+		self.filename = self.word + ".wav"
+		WAVE_OUTPUT_FILENAME = self.filename
 		stream = self.p.open(format = self.FORMAT, 
 							channels = self.CHANNELS,
 							rate = self.RATE,
@@ -83,7 +78,7 @@ class Rec(tk.Tk):
 
 		stream.close()
 			
-		wf = wave.open('test_recording.wav', 'wb')
+		wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
 		wf.setnchannels(self.CHANNELS)
 		wf.setsampwidth(self.p.get_sample_size(self.FORMAT))
 		wf.setframerate(self.RATE)
