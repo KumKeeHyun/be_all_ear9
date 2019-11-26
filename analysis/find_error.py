@@ -1,69 +1,120 @@
-#123
 #find error
 from queue import Queue
 
+#------------------------class-----------------------------
 class anlys_node:
-        def __init__(self, correct_word, voice_word):
-                    self.c_word = correct_word
-                    self.v_word = voice_word
-                    self.word_tag = ""
-                    self.typo_cnt = 0
-                    self.analysis_str()
-	
-	#compare self.c_word and self.v_word
-	#get values (word_tag and typo_cnt....)
-        def analysis_str(self):
-                if (self.c_word is not self.v_word):
-                        if len(self.v_word) < len(self.c_word):
-                                pass
-                        #elif len(self.v_word) == len(self.c_word):
-                                pass
-                        #else:
-                                pass
-def make_set(s):
-            result =set()
-            for i in range(len(s)):
-                for j in range(i+1,len(s)+1):
-                    result.add(s[i:j])
-            return result
-def lcs(word1,word2):
-            max=0
-            index=0
-            letters=[[0 for _ in range(len(word2)+1)]for _ in range(len(word1)+1)]
-            for i in range(len(word1)):
-                for j in range (len(word2)):
-                    if word1[i]==word2[j]:
-                        letters[i+1][j+1]=letters[i][j]+1
-                    if max<letters[i+1][j+1]:
-                        max=letters[i+1][j+1]
-                        index=i+1
-            return word1[index-max:index]
+    
+    def __init__(self, correct_word, voice_word):
+        self.c_word = correct_word.lower()
+        self.v_word = voice_word.lower()
+        #self.word_tag = ""
+        self.typo_cnt = 0
+        self.error = []
+        self.error_match = {'&' : 'th',
+                            '^' : 'ck',
+                            '#' : 'ph',
+                            '0' : 'oo',
+                            '9' : 'aw',
+                            '8' : 'ou',
+                            '7' : 'oa',
+                            '6' : 'ir',
+                            '5' : 'ur',
+                            '4' : 'or',
+                            '3' : 'ar',
+                            '2' : 'er',
+                            '1' : 'ow'}
+        
+        self.to_phonics = {'th' : '&',
+                           'ck' : '^',
+                           'ph' : '#',
+                           'oo' : '0',
+                           'aw' : '9',
+                           'ou' : '8',
+                           'oa' : '7',
+                           'ir' : '6',
+                           'ur' : '5',
+                           'or' : '4',
+                           'ar' : '3',
+                           'er' : '2',
+                           'ow' : '1'}
+        
+        self.error_cnt = {'&' : 0,
+                          '^' : 0,
+                          '#' : 0,
+                          '0' : 0,
+                          '9' : 0,
+                          '8' : 0,
+                          '7' : 0,
+                          '6' : 0,
+                          '5' : 0,
+                          '4' : 0,
+                          '3' : 0,
+                          '2' : 0,
+                          '1' : 0}
+        
+        self.convert_phonics()
+        self.analysis_str()
+        self.count_error()
+        if self.c_word == self.v_word:
+            print('no error')
+        for error in self.error:
+            print("occur","\"", self.error_match[error],"\"", "error, ", self.error_cnt[error],"times")
+        
+                
+    def analysis_str(self): #fill self.error(list)
+        if (self.c_word is not self.v_word):
+            
+            if len(self.v_word) <= len(self.c_word):
+                same_list = find_same_string(self.c_word, self.v_word)
+                for error in remove_same(self.c_word, self.v_word):
+                    if error in self.error_match:
+                        self.error.append(error)
+            
+            else:
+                same_list = find_same_string(self.v_word, self.c_word)
+                for error in remove_same(self.c_word, self.v_word):
+                    if error in self.error_match:
+                        self.error.append(error)
+            
+    def count_error(self):
+        for error in self.error_cnt:
+            if error in self.error:
+                self.error_cnt[error] += 1
+                self.typo_cnt += 1
+        return self.error_cnt
 
-def convert_phonics(self, correct_word):
-                if 'th' in correct_word:
-                        converted = correct_word.replace('th', '&')
-                if 'ck' in correct_word:
-                        converted = correct_word.replace('ck', '!')
-                if 'oo' in correct_word:
-                        converted = correct_word.replace('oo','0')
-                if 'aw' in correct_word:
-                        converted = correct_word.replace('aw','9')
-                if 'ou' in correct_word:
-                        converted = correct_word.replace('ou','8')
-                if 'oa' in correct_word:
-                        converted = correct_word.replace('oa','7')
-                if 'ir' in correct_word:
-                        converted = correct_word.replace('ir','6')
-                if 'ur' in correct_word:
-                        converted = correct_word.replace('ur','6')
-                if 'or' in correct_word:
-                        converted = correct_word.replace('or','5')
-                if 'ar' in correct_word:
-                        converted = correct_word.replace('ar','4')
-                if 'er' in correct_word:
-                        converted = correct_word.replace('er','3')
-                if 'ow' in correct_word:
-                        converted = correct_word.replace('ow','2')
+    def convert_phonics(self): # ex) 'th' -> '&'
+        phonics_list = list(self.error_match.values())
+        for phonics in phonics_list:
+            if phonics in self.c_word:
+                self.c_word = self.c_word.replace(phonics, self.to_phonics[phonics])
+#------------------------class-----------------------------
+
+
+#------------------------functions-----------------------------
+def find_same_string(str1, str2): # len(str1) >= len(str2)
+        answer = []
+        for i in range(len(str1)):
+                same = ''
+                for j in range(len(str2)):
+                        if (i+j < len(str1)):
+                                if (str1[i+j] == str2[j]):
+                                        same += str2[j]
+                if (same != ''):
+                        answer.append(same)
+
+        return answer
+
+def remove_same(converted_str1, str2):
+    if len(converted_str1) >= len(str2):
+        for letter in find_same_string(converted_str1, str2):
+            if letter in converted_str1:
+                converted_str1 = converted_str1.replace(letter, "")
+    else :
+        for letter in find_same_string(str2, converted_str1):
+            if letter in converted_str1:
+                converted_str1 = converted_str1.replace(letter, "")
+    return converted_str1
 
 
 #stored analysis_node temporarily
@@ -71,11 +122,12 @@ anal_node_que = Queue(100)
 
 #take a sentence and divide it into words and save, return in a list
 def split_sentence(sentence):
-	word_list = []
-	for word in sentence.split:
-                word_list.append(word)
-
-	return word_list
+    word_list = []
+	
+    for word in sentence.split(): 
+        word_list.append(word)
+            
+    return word_list
 
 
 #take a list of words and analyze them and store them in a queue	
@@ -88,14 +140,11 @@ def analysis_sentence(c_sentence, v_sentence):
         print(c_sentence.split(' '))
         print(v_sentence.split(' '))
         while(1):
-            
                 if c_sentence.split(' ')[i]==v_sentence[i]:
                     pass
                 else:
                     anlys_node_que+=v_sentence[i]
                 i+=1
-                
-                    
 
 
 #open a file, read sentence by sentence and fill anal_node_que
@@ -106,5 +155,6 @@ def read_sentence_file(c_txt_path, v_txt_path):
         
         v = open(v_txt_path, mode = 'r')
         v_sentence = v.read()
-
+        
+        return c_sentence, v_sentence
 
