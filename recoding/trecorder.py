@@ -34,22 +34,28 @@ class Rec(tk.Tk):
 		self.entry1.grid(row = 0, column = 6, columnspan = 4)
 
 		self.label2 = tk.Label(self, text = 'Your Text')
-		self.label2.grid(row = 10, column = 5)
+		self.label2.grid(row = 1, column = 5)
 
 		self.entry2 = tk.Entry(self, width = 40)
-		self.entry2.grid(row = 10, column = 6, columnspan = 4)
+		self.entry2.grid(row = 1, column = 6, columnspan = 4)
 	
+		self.labelValue = tk.StringVar()
+		self.label = tk.Label(self, width = 50, fg ='white', bg = 'skyblue', textvariable=self.labelValue)
+		self.label.grid(row = 3, column = 0, columnspan = 50)
+
+		self.labelValue.set('empty') 
+
 		self.MyButton1 = tk.Button(self, text='Start', width=10, height=1, command=lambda: self.callback())
-		self.MyButton1.grid(row = 30, column = 5)
+		self.MyButton1.grid(row = 2, column = 5)
 
 		self.MyButton2 = tk.Button(self, text='Stop', width=10, height=1, command=lambda: self.stop_rec())
-		self.MyButton2.grid(row = 30, column = 6)
+		self.MyButton2.grid(row = 2, column = 6)
 
 		self.MyButton3 = tk.Button(self, text = 'Save Text', width=10, height=1, command=lambda: self.save_text())
-		self.MyButton3.grid(row = 30, column = 7)
+		self.MyButton3.grid(row = 2, column = 7)
 
 		self.MyButton4 = tk.Button(self, text = 'Quit', width=10, height=1, command=lambda: self.quit())
-		self.MyButton4.grid(row = 30, column = 8)
+		self.MyButton4.grid(row = 2, column = 8)
 
 		tk.mainloop()
 
@@ -75,9 +81,12 @@ class Rec(tk.Tk):
 			data = stream.read(self.CHUNK)
 			self.frames.append(data)
 			self.main.update()
+			self.labelValue('recording')
 
 		stream.close()
 			
+		self.labelValue.set('done recording') 
+
 		wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
 		wf.setnchannels(self.CHANNELS)
 		wf.setsampwidth(self.p.get_sample_size(self.FORMAT))
