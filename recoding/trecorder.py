@@ -1,7 +1,6 @@
 from tkinter import ttk
-from tkinter import *
+from tkinter import messagebox
 import tkinter as tk
-import tkinter.messagebox
 
 import pyaudio
 import wave
@@ -9,12 +8,12 @@ import os
 import sys
 
 
-class Rec:
+class Rec(tk.Tk):
 	def __init__(self, chunk = 1024, frmt = pyaudio.paInt16, channels = 1, rate = 44100, py = pyaudio.PyAudio()):
 	
-		self.main = tkinter.Tk()
+		self.main = tk.Tk()
+		tk.Tk.__init__(self)
 		self.collections = []
-		self.main.title('Record')
 		self.CHUNK = chunk
 		self.FORMAT = frmt
 		self.CHANNELS = channels
@@ -28,45 +27,44 @@ class Rec:
 								input = True,
 								frames_per_buffer = self.CHUNK)
 
-		self.buttons = tkinter.Frame(self.main)
-		self.buttons.pack(fill = tk.BOTH)
-		self.labels = tkinter.Frame(self.main)
-		self.labels.pack(fill = tk.BOTH)
-#		self.entry = tkinter.Frame(self.main)
-#		self.entry.pack(fill =  tk.BOTH)
+#		self.buttons = tk.Frame(self.main)
+#		self.buttons.pack()
 
-		label1 = ttk.Label(self.labels, text = 'File Name')
-		label1.grid(row = 0, column = 0)
+#		self.labels = tk.Frame(self.main)
+#		self.labels.pack(fill = tk.BOTH)
 
-#		entry1 = ttk.Entry(self.entry, width = 40) 
-#		entry1.grid(row = 0, column = 2, columnspan = 4)
+		self.label1 = tk.Label(self, text = 'File Name')
+		self.label1.grid(row = 0, column = 5)
 
-		label2 = ttk.Label(self.labels, text = 'Your Text')
-		label2.grid(row = 4, column = 0)
+		self.entry1 = tk.Entry(self, width = 40) 
+		self.entry1.grid(row = 0, column = 6, columnspan = 4)
 
-#		entry2 = ttk.Entry(self, width = 40)
-#		entry2.grid(row = 4, column = 2, columnspan = 4)
+		self.label2 = tk.Label(self, text = 'Your Text')
+		self.label2.grid(row = 10, column = 5)
+
+		self.entry2 = tk.Entry(self, width = 40)
+		self.entry2.grid(row = 10, column = 6, columnspan = 4)
 	
-		MyButton1 = ttk.Button(self.buttons, text='Start', width=10, command=lambda: self.start_rec())
-		MyButton1.grid(row = 0, column = 8)
+		self.MyButton1 = tk.Button(self, text='Start', width=10, height=1, command=lambda: self.start_rec())
+		self.MyButton1.grid(row = 30, column = 5)
 
-		MyButton2 = ttk.Button(self.buttons, text='Stop', width=10, command=lambda: self.stop_rec())
-		MyButton2.grid(row = 0, column = 18)
+		self.MyButton2 = tk.Button(self, text='Stop', width=10, height=1, command=lambda: self.stop_rec())
+		self.MyButton2.grid(row = 30, column = 6)
 
-		MyButton3 = ttk.Button(self.buttons, text = 'Save Text', width=10, command=lambda: self.save_text())
-		MyButton3.grid(row = 4, column = 8)
+		self.MyButton3 = tk.Button(self, text = 'Save Text', width=10, height=1, command=lambda: self.save_text())
+		self.MyButton3.grid(row = 30, column = 7)
 
-		MyButton4 = ttk.Button(self.buttons, text = 'Quit', width=10,  command=lambda: self.quit())
-		MyButton4.grid(row = 4, column = 18)
+		self.MyButton4 = tk.Button(self, text = 'Quit', width=10, height=1, command=lambda: self.quit())
+		self.MyButton4.grid(row = 30, column = 8)
 
-		tkinter.mainloop()
+		tk.mainloop()
 
 	def callback():
 		if len(entry1.get()) == 0:
 			messagebox.showinfo("Error", "Enter File Name")
 		else:
 			word = entry1.get()
-			
+		#	start_rec(word)			
 
 	def start_rec(self):
 		self.st = 1
@@ -102,15 +100,4 @@ class Rec:
 	def quit(self):
 		sys.exit()			
 
-
 guiAUD = Rec()		
-
-
-##definitions here
-def callback():
-	if len(entry1.get()) == 0:
-		messagebox.showinfo("Error", "Enter File Name")
-	else:
-		word = entry1.get()
-		record.record_audio(word)
-
