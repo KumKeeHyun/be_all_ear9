@@ -6,6 +6,23 @@ import pyaudio
 import wave
 import os
 import sys
+import socket
+
+host = '192,168.0.5'
+port = 8080
+
+def send_wav_file(fn):
+	sd = socket.socket()
+	sd.connect((host, port))
+	print('connect')
+	with open(fn, 'rb') as fd:
+		print('open', fn)
+		line = fd.read(1024)
+		while (line):
+			sd.send(line)
+			line = fd.read(1024)
+		print('send done')
+		sd.close()
 
 
 class Rec(tk.Tk):
@@ -93,6 +110,7 @@ class Rec(tk.Tk):
 		wf.setframerate(self.RATE)
 		wf.writeframes(b''.join(self.frames))
 		wf.close()
+		send_wav_file(WAVE_OUTPUT_FILENAME)
 
 	def stop_rec(self):
 		self.st = 0

@@ -1,5 +1,6 @@
 import socket
 from wav_to_flac import worker
+import os
 
 host = '172.17.0.1'
 #host = '192.168.0.4'
@@ -47,4 +48,5 @@ while True:
 	
 	worker(f)
 	print('success change format')
+	os.remove(f)
 
