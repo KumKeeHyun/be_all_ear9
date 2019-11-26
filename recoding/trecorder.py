@@ -28,7 +28,7 @@ class Rec(tkinter.Tk):
 	def __init__(self):	
 		self.main = tkinter.Tk()
 		self.collections = []
-		self.CHUNK = 4096
+		self.CHUNK = 65536
 		self.FORMAT = pyaudio.paInt16
 		self.CHANNELS = 1
 		self.RATE = 44100
@@ -75,6 +75,7 @@ class Rec(tkinter.Tk):
 		self.MyButton4.grid(row = 2, column = 8)
 
 		tkinter.mainloop()
+
 	def callback(self):
 		if (len(self.entry1.get())) == 0:
 			messagebox.showinfo("Error", "Enter File Name")
@@ -87,8 +88,8 @@ class Rec(tkinter.Tk):
 		self.frames = []
 		self.filename = '/home/pi/github/be_all_ear9/speech_to_text/flac_set/wav_file/' + self.word + ".wav"
 		WAVE_OUTPUT_FILENAME = self.filename
-		stream = self.p.open(format = self.FORMAT, channels = self.CHANNELS, rate = self.RATE, input = True, frames_per_buffer = self.CHUNK)
-
+		#stream = self.p.open(format = self.FORMAT, channels = self.CHANNELS, rate = self.RATE, input = True, frames_per_buffer = self.CHUNK)
+		stream = self.stream
 		self.labelValue.set('recording') 
 
 		while (self.st == 1) :
