@@ -75,6 +75,9 @@ class anlys_node:
                 for error in remove_same(self.c_word, self.v_word):
                     if error in self.error_match:
                         self.error.append(error)
+
+        else :
+            pass
             
     def count_error(self):
         for error in self.error:
