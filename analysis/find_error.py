@@ -1,3 +1,4 @@
+
 #find error
 from queue import Queue
 
@@ -174,4 +175,5 @@ def read_sentence_file(c_txt_path, v_txt_path):
     
         
     return c_sentence_list, v_sentence_list
+
 
