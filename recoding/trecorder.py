@@ -43,7 +43,7 @@ class Rec(tkinter.Tk):
 		self.p = pyaudio.PyAudio()
 		self.frames = []
 		self.st = 1
-		self.stream = self.p.open(format = self.FORMAT, channels = self.CHANNELS, rate = self.RATE, input = True, frames_per_buffer = self.CHUNK)
+		#self.stream = self.p.open(format = self.FORMAT, channels = self.CHANNELS, rate = self.RATE, input = True, frames_per_buffer = self.CHUNK)
 	
 		self.initialize()
 		
@@ -91,8 +91,8 @@ class Rec(tkinter.Tk):
 		self.frames = []
 		self.filename = '/home/pi/github/be_all_ear9/speech_to_text/flac_set/wav_file/' + self.word + ".wav"
 		WAVE_OUTPUT_FILENAME = self.filename
-		#stream = self.p.open(format = self.FORMAT, channels = self.CHANNELS, rate = self.RATE, input = True, frames_per_buffer = self.CHUNK)
-		stream = self.stream
+		stream = self.p.open(format = self.FORMAT, channels = self.CHANNELS, rate = self.RATE, input = True, frames_per_buffer = self.CHUNK)
+		#stream = self.stream
 		self.labelValue.set('recording') 
 		GPIO.wait_for_edge(20, GPIO.FALLING)
 
