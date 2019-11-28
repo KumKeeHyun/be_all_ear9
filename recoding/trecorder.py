@@ -1,6 +1,8 @@
 from tkinter import messagebox
 import tkinter
 
+import RPi.GPIO as GPIO
+
 import pyaudio
 import wave
 import os
@@ -9,6 +11,10 @@ import socket
 
 host = '192.168.0.12'
 port = 8080
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(20, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def send_wav_file(fn):
 	print('filename : ', fn)
@@ -42,6 +48,7 @@ class Rec(tkinter.Tk):
 		self.initialize()
 		
 	def initialize(self):
+		GPIO.add_event_detect(21, GPIO.FALLING, callback=self.callback)
 
 		self.frame = tkinter.Frame(self.main)
 		self.frame.pack()
@@ -64,11 +71,11 @@ class Rec(tkinter.Tk):
 
 		self.labelValue.set('empty') 
 
-		self.MyButton1 = tkinter.Button(self.frame, text='Start', width=10, height=1, command=lambda: self.callback())
-		self.MyButton1.grid(row = 2, column = 5)
+#self.MyButton1 = tkinter.Button(self.frame, text='Start', width=10, height=1, command=lambda: self.callback())
+#		self.MyButton1.grid(row = 2, column = 5)
 
-		self.MyButton2 = tkinter.Button(self.frame, text='Stop', width=10, height=1, command=lambda: self.stop_rec())
-		self.MyButton2.grid(row = 2, column = 6)
+#		self.MyButton2 = tkinter.Button(self.frame, text='Stop', width=10, height=1, command=lambda: self.stop_rec())
+#		self.MyButton2.grid(row = 2, column = 6)
 
 		self.MyButton3 = tkinter.Button(self.frame, text = 'Save Text', width=10, height=1, command=lambda: self.save_text())
 		self.MyButton3.grid(row = 2, column = 7)
@@ -78,7 +85,7 @@ class Rec(tkinter.Tk):
 
 		tkinter.mainloop()
 
-	def callback(self):
+	def callback(self, channel):
 		if (len(self.entry1.get())) == 0:
 			messagebox.showinfo("Error", "Enter File Name")
 		else:
@@ -95,12 +102,16 @@ class Rec(tkinter.Tk):
 		self.labelValue.set('recording') 
 
 		while (self.st == 1) :
+			if GPIO.input(20) == GPIO.LOW:
+				self.st = 0
+				
 			data = stream.read(self.CHUNK, exception_on_overflow = False)
 			self.frames.append(data)
 			self.main.update()
 
 		stream.close()
 			
+		self.labelValue.set('done recording') 
 		wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
 		wf.setnchannels(self.CHANNELS)
 		wf.setsampwidth(self.p.get_sample_size(self.FORMAT))

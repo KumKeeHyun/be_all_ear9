@@ -57,9 +57,12 @@ class anlys_node:
         self.analysis_str()
         self.count_error()
         if self.c_word == self.v_word:
-            print('no error')
+            print('no error', end='')
+        else:
+            print('diction error', end=' ')
         for error in list(set(self.error)):
-            print("occur","\"", self.error_match[error],"\"", "error, ", self.typo_cnt,"times")
+            print("occur","\"", self.error_match[error],"\"", "error, ", self.typo_cnt,"times", end='')
+        print()
         
                 
     def analysis_str(self): #fill self.error(list)
