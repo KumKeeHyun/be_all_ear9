@@ -7,10 +7,11 @@ import os
 import sys
 import socket
 
-host = '192,168.0.5'
+host = '192.168.0.12'
 port = 8080
 
 def send_wav_file(fn):
+	print('filename : ', fn)
 	sd = socket.socket()
 	sd.connect((host, port))
 	print('connect')
@@ -28,7 +29,8 @@ class Rec(tkinter.Tk):
 	def __init__(self):	
 		self.main = tkinter.Tk()
 		self.collections = []
-		self.CHUNK = 65536
+	#chunk = 66536
+		self.CHUNK = 66538 
 		self.FORMAT = pyaudio.paInt16
 		self.CHANNELS = 1
 		self.RATE = 44100
@@ -93,7 +95,7 @@ class Rec(tkinter.Tk):
 		self.labelValue.set('recording') 
 
 		while (self.st == 1) :
-			data = stream.read(self.CHUNK)
+			data = stream.read(self.CHUNK, exception_on_overflow = False)
 			self.frames.append(data)
 			self.main.update()
 
