@@ -71,12 +71,6 @@ class Rec(tkinter.Tk):
 
 		self.labelValue.set('empty') 
 
-#self.MyButton1 = tkinter.Button(self.frame, text='Start', width=10, height=1, command=lambda: self.callback())
-#		self.MyButton1.grid(row = 2, column = 5)
-
-#		self.MyButton2 = tkinter.Button(self.frame, text='Stop', width=10, height=1, command=lambda: self.stop_rec())
-#		self.MyButton2.grid(row = 2, column = 6)
-
 		self.MyButton3 = tkinter.Button(self.frame, text = 'Save Text', width=10, height=1, command=lambda: self.save_text())
 		self.MyButton3.grid(row = 2, column = 7)
 
@@ -100,18 +94,19 @@ class Rec(tkinter.Tk):
 		#stream = self.p.open(format = self.FORMAT, channels = self.CHANNELS, rate = self.RATE, input = True, frames_per_buffer = self.CHUNK)
 		stream = self.stream
 		self.labelValue.set('recording') 
+		GPIO.wait_for_edge(20, GPIO.FALLING)
 
 		while (self.st == 1) :
 			if GPIO.input(20) == GPIO.LOW:
+				print('press')
 				self.st = 0
-				
+				self.labelValue.set('done recording') 
 			data = stream.read(self.CHUNK, exception_on_overflow = False)
 			self.frames.append(data)
 			self.main.update()
 
 		stream.close()
 			
-		self.labelValue.set('done recording') 
 		wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
 		wf.setnchannels(self.CHANNELS)
 		wf.setsampwidth(self.p.get_sample_size(self.FORMAT))
