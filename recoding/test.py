@@ -115,6 +115,7 @@ class Rec(tkinter.Tk):
 	def stop_rec(self):
 		self.st = 0
 		self.labelValue.set('done recording') 
+		#not for buttons
 
 	def quit(self):
 		sys.exit()			
