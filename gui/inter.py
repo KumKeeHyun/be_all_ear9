@@ -4,6 +4,7 @@ import sys
 class GUI(tkinter.Tk):
 	def __init__(self):
 		self.main = tkinter.Tk()
+		self.main.title('Statics')
 		self.initialize()
 
 	def initialize(self):
@@ -11,31 +12,35 @@ class GUI(tkinter.Tk):
 		self.frame.pack()
 		
 		self.resValue = tkinter.StringVar()
-		self.res = tkinter.Label(self.frame, width = 70, height = 30, bg = 'skyblue', textvariable = self.resValue)
-		self.res.grid(row = 0, column = 0)
+		self.res = tkinter.Label(self.frame, width = 80, height = 20, bg = 'skyblue', textvariable = self.resValue)
+		self.res.grid(row = 0, column = 0, columnspan = 40,  padx = 1, pady = 2)
 
 		self.resValue.set('init')
 		
+		self.empty = tkinter.Label(self.frame, width = 80, height = 1)
+		self.empty.grid(row = 1, column = 0, columnspan = 40, padx = 1)
+
 		self.vsentValue = tkinter.StringVar()
-		self.vsent = tkinter.Label(self.frame, width = 50, bg = 'white', textvariable = self.vsentValue)
-		self.vsent.grid(row = 1, column = 0, columnspan = 20)
+
+		self.vsent = tkinter.Label(self.frame, width = 60, bg = 'white', textvariable = self.vsentValue)
+		self.vsent.grid(row = 2, column = 1, columnspan = 20, padx = 1, pady = 2)
 
 		self.vsentValue.set('v_sentence')
 		
-		self.csent = tkinter.Entry(self.frame, width = 50)
-		self.csent.grid(row = 2, column = 0, columnspan = 20)
+		self.csent = tkinter.Entry(self.frame, width = 60)
+		self.csent.grid(row = 3, column = 1, columnspan = 20, padx = 1, pady = 2)
 
 		self.enter = tkinter.Button(self.frame, text = 'enter', width = 10, command=lambda: self.callback())
-		self.enter.grid(row = 2, column = 50)
+		self.enter.grid(row = 3, column = 35, padx = 1, pady = 2)
 
-		self.start = tkinter.Button(self.frame, text = 'input start', width = 8, height = 4, command=lambda: self.callback())
-		self.start.grid(row = 3, column = 0)
+		self.start = tkinter.Button(self.frame, text = 'input start', width = 10, height = 2, command=lambda: self.callback())
+		self.start.grid(row = 4, column = 1, padx = 1, pady = 2)
 		
-		self.out = tkinter.Button(self.frame, text = 'show result', width = 8, height = 4, command=lambda: self.callback())
-		self.out.grid(row = 3, column = 1)
+		self.out = tkinter.Button(self.frame, text = 'show result', width = 10, height = 2, command=lambda: self.callback())
+		self.out.grid(row = 4, column = 2, padx = 1, pady = 2)
 
-		self.quit = tkinter.Button(self.frame, text = 'quit', width = 8, height = 4, command=lambda: self.quit())
-		self.quit.grid(row = 3, column = 2)
+		self.die = tkinter.Button(self.frame, text = 'quit', width = 10, height = 2, command=lambda: self.quit())
+		self.die.grid(row = 4, column = 35, padx = 2, pady = 2)
 
 		tkinter.mainloop()
 
