@@ -35,6 +35,7 @@ def send_wav_file(fn):
 class Rec(tkinter.Tk):
 	def __init__(self):	
 		self.main = tkinter.Tk()
+		self.main.title('Recorder')
 		self.collections = []
 		self.CHUNK = 66536 
 		self.FORMAT = pyaudio.paInt16
