@@ -7,6 +7,7 @@ class GUI(tkinter.Tk):
 		self.v_path = '../speech_to_text/flac_set/output/output.txt'
 		self.c_path = '../analysis/c_output.txt'
 		self.s_path = './stat_output.txt'
+
 		self.main = tkinter.Tk()
 		self.main.title('Statics')
 		self.initialize()
@@ -14,10 +15,15 @@ class GUI(tkinter.Tk):
 	def initialize(self):
 		self.frame = tkinter.Frame(self.main)
 		self.frame.pack()
+
+		self.scrollbar = tkinter.Scrollbar(self.frame)
+		self.scrollbar.pack(side="right", fill="y")
 		
 		self.resValue = tkinter.StringVar()
-		self.res = tkinter.Label(self.frame, width = 80, height = 15, bg = 'skyblue', textvariable = self.resValue)
+		self.res = tkinter.Label(self.frame, width = 80, height = 15, bg = 'skyblue', textvariable = self.resValue, yscrollcommand = self.scrollbar.set)
 		self.res.grid(row = 0, column = 0, columnspan = 40,  padx = 1, pady = 2)
+
+		self.scrollbar["command"] = self.res.yview
 
 		self.resValue.set(' ')
 		
@@ -81,7 +87,7 @@ class GUI(tkinter.Tk):
 					stat_string += line
 				f.close()
 			print(stat_string)
-		self.resValue.set(stat_string)
+#		self.resValue.set(stat_string)
 			
 	def quit(self):
 		sys.exit()
