@@ -59,18 +59,29 @@ class GUI(tkinter.Tk):
 			self.text = self.csent.get()
 	
 	def showstat(self):
+		print("start showstat")
+		stat_string = ''
 		try:
+			print("call fork")
 			pid = os.fork()
 		except OSError:
 			exit("fork error")
 		if pid == 0:
-			fd = os.open(self.s_path, os.O_RDWR)
+			print("start child")
+			fd = os.open(self.s_path, os.O_RDWR|os.O_TRUNC)
 			os.dup2(fd, sys.stdout.fileno())
-			os.execl('/usr/bin/python3', 'python3', '../analysis/statistics.py'
+			os.execl('/usr/bin/python3', 'python3', '../analysis/statistics.py')
+			exit()
 		else:
 			os.wait()
-			
-		self.resValue.set("showing res")
+			print("child end")
+			with open(self.s_path, 'r') as f:
+				lines = f.readlines()
+				for line in lines:
+					stat_string += line
+				f.close()
+			print(stat_string)
+		self.resValue.set(stat_string)
 			
 	def quit(self):
 		sys.exit()
