@@ -55,32 +55,45 @@ class GUI(tkinter.Tk):
 		tkinter.mainloop()
 
 	def callback(self):
-		print("something pressed")
+		#print("something pressed")
+		with open(self.v_path, 'r') as f:
+			self.lines = f.readlines()
+			self.lines_idx = 0
+			f.close()
+		self.c_fd = open(self.c_path, 'w')
+		self.print_vline()
+	
+	def print_vline(self):
+		if self.lines_idx == len(self.lines):
+			self.c_fd.close()
+			self.vsentValue.set("end of file")
 
+		else: 
+			text = self.lines[self.lines_idx][:-1]
+			self.vsentValue.set(text)
+			self.lines_idx += 1
+		
 	def entercb(self):
 		if (len(self.csent.get())) == 0 :
 			messagebox.showinfor("Error", "Enter sentence")
-
 		else:
-			self.text = self.csent.get()
+			text = self.csent.get()
+			self.c_fd.write(text+'\n')
+			self.print_vline()
 	
 	def showstat(self):
-		print("start showstat")
 		stat_string = ''
 		try:
-			print("call fork")
 			pid = os.fork()
 		except OSError:
 			exit("fork error")
 		if pid == 0:
-			print("start child")
 			fd = os.open(self.s_path, os.O_RDWR|os.O_TRUNC)
 			os.dup2(fd, sys.stdout.fileno())
 			os.execl('/usr/bin/python3', 'python3', '../analysis/statistics.py')
 			exit()
 		else:
 			os.wait()
-			print("child end")
 			with open(self.s_path, 'r') as f:
 				lines = f.readlines()
 				for line in lines:
