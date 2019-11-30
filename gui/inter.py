@@ -1,8 +1,12 @@
 import tkinter
 import sys
+import os
 
 class GUI(tkinter.Tk):
 	def __init__(self):
+		self.v_path = '../speech_to_text/flac_set/output/output.txt'
+		self.c_path = '../analysis/c_output.txt'
+		self.s_path = './stat_output.txt'
 		self.main = tkinter.Tk()
 		self.main.title('Statics')
 		self.initialize()
@@ -55,6 +59,17 @@ class GUI(tkinter.Tk):
 			self.text = self.csent.get()
 	
 	def showstat(self):
+		try:
+			pid = os.fork()
+		except OSError:
+			exit("fork error")
+		if pid == 0:
+			fd = os.open(self.s_path, os.O_RDWR)
+			os.dup2(fd, sys.stdout.fileno())
+			os.execl('/usr/bin/python3', 'python3', '../analysis/statistics.py'
+		else:
+			os.wait()
+			
 		self.resValue.set("showing res")
 			
 	def quit(self):
