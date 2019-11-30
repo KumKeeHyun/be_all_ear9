@@ -4,9 +4,8 @@ my : wy => diction error
 major : majur => diction error occur " or " error,  1 times
 is : his => diction error 
 smart : swarts => diction error occur " ar " error,  1 times
-system : system => no error
-software : softdwere => diction error occur " ar " error,  1 times
+syse : system => diction error 
 
 -----stat-----
-your main pronunciation error is [ ar ] 23 times
-your main pronunciation error is [ or ] 13 times
+your main pronunciation error is [ or ] 12 times
+your main pronunciation error is [ ar ] 20 times

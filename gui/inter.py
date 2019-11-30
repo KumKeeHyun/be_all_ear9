@@ -16,14 +16,10 @@ class GUI(tkinter.Tk):
 		self.frame = tkinter.Frame(self.main)
 		self.frame.pack()
 
-		self.scrollbar = tkinter.Scrollbar(self.frame)
-		self.scrollbar.pack(side="right", fill="y")
-		
 		self.resValue = tkinter.StringVar()
-		self.res = tkinter.Label(self.frame, width = 80, height = 15, bg = 'skyblue', textvariable = self.resValue, yscrollcommand = self.scrollbar.set)
+		self.res = tkinter.Label(self.frame, width = 80, height = 15, bg = 'skyblue', textvariable = self.resValue)
 		self.res.grid(row = 0, column = 0, columnspan = 40,  padx = 1, pady = 2)
-
-		self.scrollbar["command"] = self.res.yview
+		self.res.config(font=(40))
 
 		self.resValue.set(' ')
 		
@@ -31,14 +27,17 @@ class GUI(tkinter.Tk):
 		self.empty.grid(row = 1, column = 0, columnspan = 40, padx = 1)
 
 		self.vsentValue = tkinter.StringVar()
+		self.csentValue = tkinter.StringVar()
 
 		self.vsent = tkinter.Label(self.frame, anchor = 'w', width = 60, bg = 'white', textvariable = self.vsentValue)
 		self.vsent.grid(row = 2, column = 1, columnspan = 20, padx = 1, pady = 2, ipadx = 2)
 
-		self.vsentValue.set('v_sentence')
+		self.vsentValue.set('Press Start Button First')
 		
-		self.csent = tkinter.Entry(self.frame, width = 60)
+		self.csent = tkinter.Entry(self.frame, width = 60, textvariable = self.csentValue)
 		self.csent.grid(row = 3, column = 1, columnspan = 20, padx = 1, pady = 2, ipadx = 2)
+
+		self.csentValue.set('')
 
 		self.enter = tkinter.Button(self.frame, text = 'enter', width = 10, command=lambda: self.entercb())
 		self.enter.grid(row = 3, column = 35, padx = 1, pady = 2)
@@ -80,6 +79,7 @@ class GUI(tkinter.Tk):
 			text = self.csent.get()
 			self.c_fd.write(text+'\n')
 			self.print_vline()
+			self.csentValue.set(' ')
 	
 	def showstat(self):
 		stat_string = ''
@@ -100,7 +100,7 @@ class GUI(tkinter.Tk):
 					stat_string += line
 				f.close()
 			print(stat_string)
-#		self.resValue.set(stat_string)
+		self.resValue.set(stat_string)
 			
 	def quit(self):
 		sys.exit()
