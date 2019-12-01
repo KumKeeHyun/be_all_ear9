@@ -1,7 +1,8 @@
 import socket
 import os
+import sys
 
-host = '192.168.0.23'
+host = str(sys.argv[1])
 port = 5000
 
 f = './flac_set/output/output.txt'

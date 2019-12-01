@@ -9,7 +9,7 @@ import os
 import sys
 import socket
 
-host = '192.168.0.12'
+host = str(sys.argv[1])
 port = 8080
 
 GPIO.setmode(GPIO.BCM)
@@ -73,7 +73,7 @@ class Rec(tkinter.Tk):
 
 	def callback(self, channel):
 		GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-		time.sleep(1)
+		GPIO.setup(20, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 		if (len(self.entry1.get())) == 0:
 			messagebox.showinfo("Error", "Enter File Name")
 		else:
@@ -81,24 +81,24 @@ class Rec(tkinter.Tk):
 			self.start_rec(self.word)			
 
 	def start_rec(self, word):
-		print("0")
+		GPIO.output(4, True)
 		self.st = 1
 		self.frames = []
 		self.filename = '/home/pi/github/be_all_ear9/speech_to_text/flac_set/wav_file/' + self.word + ".wav"
 		WAVE_OUTPUT_FILENAME = self.filename
 		stream = self.p.open(format = self.FORMAT, channels = self.CHANNELS, rate = self.RATE, input = True, frames_per_buffer = self.CHUNK)
 		self.labelValue.set('recording') 
-		GPIO.output(4, True)
-		GPIO.wait_for_edge(20, GPIO.FALLING)
+
+		#GPIO.wait_for_edge(20, GPIO.FALLING)
 
 		while (self.st == 1) :
 			if GPIO.input(20) == GPIO.LOW:
 				GPIO.output(4, False)
 				self.st = 0
 				self.labelValue.set('done recording') 
-				time.sleep(1)
 			data = stream.read(self.CHUNK, exception_on_overflow = False)
 			self.frames.append(data)
+			print('recording!')
 			self.main.update()
 
 		stream.close()
@@ -108,7 +108,6 @@ class Rec(tkinter.Tk):
 		wf.setsampwidth(self.p.get_sample_size(self.FORMAT))
 		wf.setframerate(self.RATE)
 		wf.writeframes(b''.join(self.frames))
-		print('3')	
 		wf.close()
 		send_wav_file(WAVE_OUTPUT_FILENAME)
 
@@ -117,6 +116,7 @@ class Rec(tkinter.Tk):
 		self.labelValue.set('done recording') 
 
 	def quit(self):
+		GPIO.output(4, False)
 		sys.exit()			
 
 guiAUD = Rec()		
