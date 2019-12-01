@@ -17,9 +17,9 @@ error_match = {'&' : 'th',
 			   '2' : 'er',
 			   '1' : 'ow'}
 
-c_path = './c_output.txt'
+c_path = '../analysis/c_output.txt'
 v_path = '../speech_to_text/flac_set/output/output.txt'
-statistics_path = './statistics.txt'
+statistics_path = '../analysis/statistics.txt'
 
 def input_c_txt():
 	cd = open(c_path, 'w')
@@ -33,7 +33,7 @@ def input_c_txt():
 		correct_line = input('enter sentence :')
 		cd.write(correct_line + '\n')
 
-input_c_txt()
+#input_c_txt()
 
 print('\nanlaysis..')
 c_sentence_list, v_sentence_list = read_sentence_file(c_path, v_path)

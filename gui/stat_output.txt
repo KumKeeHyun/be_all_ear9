@@ -1,11 +1,18 @@
 
 anlaysis..
-my : wy => diction error 
-major : majur => diction error occur " or " error,  1 times
-is : his => diction error 
-smart : swarts => diction error occur " ar " error,  1 times
-syse : system => diction error 
+my : my => no error
+major : majure => diction error occur " or " error,  1 times
+is : is => no error
+smart : smart => diction error occur " ar " error,  1 times
+system : system => no error
+software : sop => diction error occur " ar " error,  1 times
+my : y => diction error 
+major : majure => diction error occur " or " error,  1 times
+e : e => no error
+e : e => no error
+e : oe => diction error 
+e : e => no error
 
 -----stat-----
-your main pronunciation error is [ or ] 12 times
-your main pronunciation error is [ ar ] 20 times
+your main pronunciation error is [ or ] 24 times
+your main pronunciation error is [ ar ] 43 times
