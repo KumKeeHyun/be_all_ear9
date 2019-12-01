@@ -1,46 +1,42 @@
 
 # BE_ALL_EAR9
 
+## Execution process
 
-## How to send pull request
+Connect Raspberry Pi and Computer to the Same Wifi
 
-create new branch in your forked repository
+### in Raspi
 
+voice recording 
+in recoding dir
 ```sh
-
-git checkout -B 'new-branch-name' 
-
+python3 trecorder.py <computer ip>
 ```
 
-add upstream (KumKeehyun/The-Gasero) to your working environment
-
+receive voice output.txt
+in speech_to_text dir
 ```sh
-
-git remote add https://github.com/KumKeeHyun/The-Gasero.git
-
+python3 recv_output.py <raspi ip>
 ```
 
-send pull request at the github web interface
-
-wait your pull request to be merged
-
-update your forked repository from original repository
-
+analysis output
+in gui dir
 ```sh
-
-git checkout master 
-
-git pull upstream/master
-
+python3 inter.py
 ```
 
+### in Computer
 
-## How to reset commit in your machine
-
+receive wav file
+in speech_to_text dir
 ```sh
+python3 recv_wav.py <computer ip>
+```
 
-git reset --hard HEAD~n # restore 'n' steps back
-
+speech to text and send output
+in docker
+```sh
+python3 docker_main.py
 ```
 
 ## How to install docker and make container(Speech-to-Text-wavenet) in linux
@@ -87,13 +83,4 @@ run docker container - interactive mode
 sudo docker run -it buriburisuri/speech-to-text-wavenet
 
 ```
-
-in docker container execute speech-to-text
-
-```sh
-
-python recognize.py --file 
-
-python recognize.py --file asset/data/LibriSpeech/test-clean/1089/134686/1089-134686-0000.flac
-
-```
+please append volume directory 'speech_to_text/flac_set' 
